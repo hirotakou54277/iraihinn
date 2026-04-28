@@ -1,0 +1,3199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>アイリス・セカンド | 安心・快適な住まい</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@100;300;400&family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== FONT VARIABLES ===== */
+    :root {
+      --font-display:   'Cormorant Garamond', 'Noto Serif JP', serif;  /* ヒーロー・ロゴ・キャッチ */
+      --font-serif:     'Playfair Display',   'Noto Serif JP', serif;  /* 見出し・カードタイトル */
+      --font-label:     'Cinzel', serif;                                /* 英語セクションラベル */
+      --font-ui:        'Josefin Sans',        sans-serif;              /* ナビ・バッジ・スライドサブ */
+      --font-body:      'Noto Sans JP',        sans-serif;              /* 本文 */
+    }
+
+    /* ===== FONT ASSIGNMENTS ===== */
+    /* Navigation */
+    .nav-logo      { font-family: var(--font-display); font-style: italic; }
+    .nav-links a   { font-family: var(--font-ui); letter-spacing: 0.08em; }
+    .nav-cta       { font-family: var(--font-ui); }
+    /* Hero */
+    .slide-label   { font-family: var(--font-ui); font-weight: 100; letter-spacing: 0.35em; }
+    .slide-title   { font-family: var(--font-display); }
+    .slide-sub     { font-family: var(--font-ui); font-weight: 300; }
+    /* Section headers */
+    .section-en    { font-family: var(--font-label); }
+    .section-title { font-family: var(--font-serif); }
+    /* Features */
+    .features-catch { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+    .feature-title  { font-family: var(--font-serif); }
+    /* Property */
+    .prop-name     { font-family: var(--font-display); font-size: 1.5rem; }
+    .prop-floor-header h3 { font-family: var(--font-serif); }
+    .prop-grid-header h3  { font-family: var(--font-serif); }
+    /* Meals */
+    .meals-text h3 { font-family: var(--font-serif); }
+    /* Pricing */
+    .pricing-title-inner { font-family: var(--font-serif); }
+    .pricing-total .amount { font-family: var(--font-display); font-weight: 600; font-size: 1.7rem; }
+    /* Eligibility */
+    .eligibility-num { font-family: var(--font-display); font-weight: 300; }
+    /* Contact */
+    .line-card h3  { font-family: var(--font-serif); }
+    /* Footer */
+    .footer-logo   { font-family: var(--font-display); font-style: italic; letter-spacing: 0.08em; }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      color: #3a3a3a;
+      background: #fdfcfa;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 70px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(220,180,180,0.3);
+      transition: background 0.3s;
+    }
+    nav.scrolled { background: rgba(255,255,255,0.98); box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .nav-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.3rem;
+      color: #c8848a;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem;
+      color: #555;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #c8848a; }
+    .nav-cta {
+      background: #c8848a;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.78rem !important;
+      letter-spacing: 0.08em;
+    }
+    .nav-cta:hover { background: #b57078 !important; color: #fff !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #555; transition: 0.3s; }
+
+    /* ===== HERO SLIDER ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      margin-top: 0;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .slide.active { opacity: 1; }
+    .slide-bg {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scale(1.06);
+      transition: transform 6s ease;
+    }
+    .slide.active .slide-bg { transform: scale(1); }
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.42) 100%);
+    }
+    .slide-content {
+      position: absolute;
+      bottom: 18%;
+      left: 10%;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s 0.5s, transform 0.8s 0.5s;
+    }
+    .slide.active .slide-content { opacity: 1; transform: translateY(0); }
+    .slide-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.85;
+    }
+    .slide-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.4;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .slide-sub {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      margin-top: 14px;
+      opacity: 0.88;
+      letter-spacing: 0.05em;
+    }
+    /* Slider arrows */
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #fff;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+      backdrop-filter: blur(4px);
+    }
+    .slider-btn:hover { background: rgba(255,255,255,0.35); }
+    .slider-prev { left: 24px; }
+    .slider-next { right: 24px; }
+    /* Slider dots */
+    .slider-dots {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.active { background: #fff; transform: scale(1.3); }
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 38px;
+      right: 42px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.5);
+      animation: scrollDown 2s infinite;
+    }
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ===== SECTION COMMON ===== */
+    section { padding: 100px 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-en {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: #c8848a;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      color: #2d2d2d;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 18px;
+    }
+    /* Pink underline animation */
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #e8b4b8, #c8848a, #e8b4b8, transparent);
+      border-radius: 2px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-title.in-view::after { width: 100%; }
+    .section-desc {
+      font-size: 0.92rem;
+      color: #777;
+      margin-top: 14px;
+      line-height: 1.8;
+    }
+
+    /* ===== FADE IN ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fade-left.visible { opacity: 1; transform: translateX(0); }
+    .fade-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fade-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    /* ===== 1. FEATURES ===== */
+    #features { background: #fdfcfa; }
+
+    /* 入居者募集バッジ */
+    .recruit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #c8848a, #e8b4b8);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      padding: 7px 20px;
+      border-radius: 24px;
+      margin-bottom: 18px;
+      animation: badgePulse 2.4s ease-in-out infinite;
+    }
+    .recruit-badge::before { content: '●'; font-size: 0.5rem; animation: dotBlink 1.2s infinite; }
+    @keyframes badgePulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(200,132,138,0.5); }
+      50%      { box-shadow: 0 0 0 10px rgba(200,132,138,0); }
+    }
+    @keyframes dotBlink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* キャッチコピー */
+    .features-catch {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-weight: 400;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      padding: 28px 36px;
+      background: #fff;
+      border-radius: 16px;
+      border-left: 4px solid #e8b4b8;
+      box-shadow: 0 4px 24px rgba(200,132,138,0.08);
+    }
+    .features-catch strong { color: #c8848a; }
+
+    /* チェックリスト */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-bottom: 60px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 3px 20px rgba(200,132,138,0.07);
+      border: 1.5px solid transparent;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .check-item:hover {
+      border-color: #e8b4b8;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(200,132,138,0.14);
+    }
+    /* SVGチェックボックス */
+    .cb-box {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      position: relative;
+    }
+    .cb-box svg { width: 28px; height: 28px; overflow: visible; }
+    .cb-rect {
+      fill: none;
+      stroke: #ddd;
+      stroke-width: 2;
+      rx: 5;
+      transition: stroke 0.3s;
+    }
+    .cb-fill {
+      fill: #c8848a;
+      rx: 5;
+      transform-origin: center;
+      transform: scale(0);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cb-check {
+      stroke: #fff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      stroke-dasharray: 22;
+      stroke-dashoffset: 22;
+      transition: stroke-dashoffset 0.3s 0.18s ease;
+    }
+    /* checked state */
+    .check-item.checked .cb-fill { transform: scale(1); }
+    .check-item.checked .cb-rect { stroke: #c8848a; }
+    .check-item.checked .cb-check { stroke-dashoffset: 0; }
+    .check-text {
+      font-size: 0.92rem;
+      color: #3a3a3a;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+    .check-item.checked .check-text { color: #2d2d2d; font-weight: 500; }
+
+    /* 6つの理由カード（下部） */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 4px 30px rgba(200,132,138,0.08);
+      border: 1px solid rgba(200,132,138,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(200,132,138,0.16); }
+    .feature-icon {
+      width: 64px; height: 64px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, #fce8ea, #f8d0d4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+    .feature-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+      color: #2d2d2d;
+    }
+    .feature-text {
+      font-size: 0.83rem;
+      color: #777;
+      line-height: 1.9;
+    }
+
+    /* ===== 2. PROPERTY ===== */
+    #property { background: #f9f5f5; padding-bottom: 80px; overflow-x: hidden; }
+
+    /* --- Layout --- */
+    .prop-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 36px;
+      align-items: start;
+      margin-bottom: 64px;
+      width: 100%;
+    }
+
+    /* グリッド子要素：オーバーフロー防止の必須設定 */
+    .prop-gallery-col {
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    /* --- Category Tabs --- */
+    .prop-cat-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .prop-cat-tabs::-webkit-scrollbar { display: none; }
+    .prop-cat-tab {
+      flex-shrink: 0;
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      font-size: 0.78rem;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.22s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .prop-cat-tab .tab-count {
+      background: #f0e8e8;
+      color: #c8848a;
+      font-size: 0.68rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .prop-cat-tab.active, .prop-cat-tab:hover {
+      background: #c8848a;
+      border-color: #c8848a;
+      color: #fff;
+    }
+    .prop-cat-tab.active .tab-count, .prop-cat-tab:hover .tab-count {
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
+    /* --- Main Viewer --- */
+    .prop-main-viewer {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #222;
+      aspect-ratio: 4/3;
+      cursor: zoom-in;
+    }
+    .prop-main-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.35s ease;
+    }
+    .prop-main-img.switching { opacity: 0; }
+    .prop-viewer-top {
+      position: absolute;
+      top: 14px; left: 14px; right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+    .prop-photo-cat-badge {
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 5px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.06em;
+    }
+    .prop-counter {
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 5px 12px;
+      border-radius: 14px;
+      backdrop-filter: blur(4px);
+    }
+    .prop-nav-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .prop-nav-btn:hover { background: rgba(255,255,255,0.32); }
+    .prop-prev { left: 12px; }
+    .prop-next { right: 12px; }
+    .prop-fullscreen-btn {
+      position: absolute;
+      bottom: 14px; right: 14px;
+      width: 36px; height: 36px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .prop-fullscreen-btn:hover { background: rgba(0,0,0,0.75); }
+
+    /* --- Thumbnail Strip --- */
+    .prop-thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #e8b4b8 transparent;
+    }
+    .prop-thumbs::-webkit-scrollbar { height: 4px; }
+    .prop-thumbs::-webkit-scrollbar-track { background: transparent; }
+    .prop-thumbs::-webkit-scrollbar-thumb { background: #e8b4b8; border-radius: 2px; }
+    .prop-thumb {
+      flex-shrink: 0;
+      width: 72px; height: 54px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      transition: border-color 0.2s, opacity 0.2s;
+      opacity: 0.65;
+    }
+    .prop-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prop-thumb.active { border-color: #c8848a; opacity: 1; }
+    .prop-thumb:hover { opacity: 0.9; }
+    .prop-thumb-more {
+      flex-shrink: 0;
+      width: 72px; height: 54px;
+      border-radius: 8px;
+      background: rgba(200,132,138,0.12);
+      border: 2px dashed #e8b4b8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      color: #c8848a;
+      cursor: pointer;
+      gap: 2px;
+    }
+    .prop-thumb-more span { font-size: 1rem; font-weight: 700; }
+
+    /* --- Info Panel --- */
+    .prop-info-panel {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 4px 30px rgba(200,132,138,0.09);
+      position: sticky;
+      top: 86px;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .prop-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: #4caf82;
+      background: #edf7f2;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .prop-status::before { content: '●'; font-size: 0.5rem; }
+    .prop-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 5px;
+    }
+    .prop-address { font-size: 0.8rem; color: #999; margin-bottom: 18px; }
+
+    /* chips */
+    .prop-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .prop-chip {
+      font-size: 0.78rem;
+      background: #f9f0f0;
+      color: #5a3a3a;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #f0e0e0;
+    }
+
+    /* detail table */
+    .prop-detail-table { width: 100%; border-collapse: collapse; margin-bottom: 22px; }
+    .prop-detail-table tr { border-bottom: 1px solid #f5eeee; }
+    .prop-detail-table th {
+      width: 38%;
+      padding: 11px 8px;
+      font-size: 0.76rem;
+      color: #bbb;
+      font-weight: 400;
+      text-align: left;
+      vertical-align: top;
+    }
+    .prop-detail-table td {
+      padding: 11px 8px;
+      font-size: 0.85rem;
+      color: #333;
+      font-weight: 500;
+    }
+    .prop-equip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .prop-equip-tag {
+      font-size: 0.7rem;
+      background: #f5f0f0;
+      color: #666;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .prop-divider { height: 1px; background: linear-gradient(90deg,transparent,#e8b4b8,transparent); margin: 18px 0; }
+
+    /* CTA */
+    .prop-cta-row { display: flex; gap: 10px; }
+    .prop-btn-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #c8848a, #d4a0a5);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 10px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .prop-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,132,138,0.35); }
+    .prop-btn-secondary {
+      width: 50px;
+      background: #f9f0f0;
+      border: 1.5px solid #e8b4b8;
+      border-radius: 12px;
+      color: #c8848a;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .prop-btn-secondary:hover { background: #fce8ea; }
+
+    /* --- Floor Plan Section --- */
+    .prop-floor-section {
+      margin-bottom: 56px;
+    }
+    .prop-floor-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .prop-floor-header h3 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    .prop-floor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .prop-floor-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .prop-floor-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(200,132,138,0.14); }
+    .prop-floor-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: #f0e8e8;
+    }
+    .prop-floor-info {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .prop-floor-label { font-size: 0.82rem; font-weight: 500; }
+    .prop-floor-size { font-size: 0.75rem; color: #c8848a; }
+
+    /* --- All Photos Grid (filterable) --- */
+    .prop-grid-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .prop-grid-header h3 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    .prop-grid-count { font-size: 0.8rem; color: #aaa; }
+    .prop-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .prop-grid-item {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      position: relative;
+      background: #e8e0e0;
+      transition: transform 0.3s;
+    }
+    .prop-grid-item:hover { transform: scale(1.02); }
+    .prop-grid-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prop-grid-item-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.58));
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 20px 10px 8px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .prop-grid-item:hover .prop-grid-item-label { opacity: 1; }
+    .prop-grid-item.hidden { display: none; }
+    .prop-grid-item.prop-grid-featured {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+
+    /* Photo Lightbox (property) */
+    .prop-lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      z-index: 3500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .prop-lightbox.open { opacity: 1; pointer-events: all; }
+    .prop-lb-inner {
+      position: relative;
+      max-width: 92vw;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .prop-lb-img {
+      max-width: 100%;
+      max-height: 78vh;
+      border-radius: 10px;
+      object-fit: contain;
+      display: block;
+    }
+    .prop-lb-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .prop-lb-title { color: rgba(255,255,255,0.8); font-size: 0.85rem; }
+    .prop-lb-counter { color: rgba(255,255,255,0.55); font-size: 0.78rem; }
+    .prop-lb-close {
+      position: absolute;
+      top: -50px; right: 0;
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      border: none;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .prop-lb-nav {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .prop-lb-nav:hover { background: rgba(255,255,255,0.26); }
+    .prop-lb-prev { left: 20px; }
+    .prop-lb-next { right: 20px; }
+    .prop-lb-thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      overflow-x: auto;
+      max-width: 92vw;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .prop-lb-thumbs::-webkit-scrollbar { display: none; }
+    .prop-lb-thumb {
+      flex-shrink: 0;
+      width: 60px; height: 44px;
+      border-radius: 6px;
+      overflow: hidden;
+      opacity: 0.45;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: opacity 0.2s, border-color 0.2s;
+    }
+    .prop-lb-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .prop-lb-thumb.active { opacity: 1; border-color: #e8b4b8; }
+
+    /* ===== 3. LOCATION ===== */
+    #location { background: #fdfcfa; }
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .location-map-placeholder {
+      border-radius: 20px;
+      overflow: hidden;
+      height: 400px;
+      background: #e8e0e0;
+      position: relative;
+    }
+    .location-map-placeholder iframe { width: 100%; height: 100%; border: none; }
+    .location-items { display: flex; flex-direction: column; gap: 18px; }
+    .location-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 22px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+      transition: transform 0.25s;
+    }
+    .location-item:hover { transform: translateX(6px); }
+    .loc-icon {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, #fce8ea, #f8d0d4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .loc-info h4 { font-size: 0.9rem; font-weight: 500; margin-bottom: 3px; }
+    .loc-info p { font-size: 0.78rem; color: #999; }
+    .loc-time {
+      margin-left: auto;
+      font-size: 0.78rem;
+      color: #c8848a;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ===== 4. ROOM TOUR ===== */
+    #roomtour { background: #1a1a1a; }
+    #roomtour .section-title { color: #fff; }
+    #roomtour .section-title::after { background: linear-gradient(90deg, transparent, #e8b4b8, #c8848a, #e8b4b8, transparent); }
+    #roomtour .section-en { color: #c8848a; }
+    #roomtour .section-desc { color: #aaa; }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .video-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #2a2a2a;
+      cursor: pointer;
+      position: relative;
+      aspect-ratio: 16/9;
+      transition: transform 0.3s;
+    }
+    .video-card:hover { transform: scale(1.02); }
+    .video-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .video-card:hover .video-overlay { background: rgba(0,0,0,0.2); }
+    .play-btn {
+      width: 54px; height: 54px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #c8848a;
+      transition: transform 0.3s;
+    }
+    .video-card:hover .play-btn { transform: scale(1.1); }
+    .video-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 24px 14px 12px;
+    }
+
+    /* ===== 5. MEALS ===== */
+    #meals { background: #fdfcfa; }
+    .meals-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 60px;
+    }
+    .meals-text h3 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .meals-text p { font-size: 0.88rem; color: #666; line-height: 2; }
+    .meals-highlights {
+      display: flex;
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .meal-point {
+      flex: 1;
+      text-align: center;
+      padding: 16px;
+      background: #fff;
+      border-radius: 10px;
+      border-bottom: 2px solid #e8b4b8;
+    }
+    .meal-point .num { font-size: 1.4rem; font-weight: 700; color: #c8848a; }
+    .meal-point .lbl { font-size: 0.72rem; color: #999; margin-top: 4px; }
+    .meal-gallery {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .meal-item {
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      position: relative;
+      cursor: pointer;
+    }
+    .meal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .meal-item:hover img { transform: scale(1.08); }
+    .meal-item:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+
+    /* ===== 6. PRICING ===== */
+    #pricing { background: linear-gradient(135deg, #fce8ea 0%, #f9f0f0 50%, #fce8ea 100%); }
+    .pricing-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 56px;
+      max-width: 780px;
+      margin: 0 auto;
+      box-shadow: 0 8px 50px rgba(200,132,138,0.15);
+    }
+    .pricing-title-inner {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 36px;
+      color: #555;
+    }
+    .pricing-rows { display: flex; flex-direction: column; gap: 0; }
+    .pricing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #f5eeee;
+    }
+    .pricing-row:last-of-type { border-bottom: none; }
+    .pricing-label { font-size: 0.9rem; color: #555; display: flex; align-items: center; gap: 10px; }
+    .pricing-label .dot-pink { width: 6px; height: 6px; background: #e8b4b8; border-radius: 50%; }
+    .pricing-amount { font-size: 1rem; font-weight: 500; color: #2d2d2d; }
+    .pricing-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #e8b4b8, transparent);
+      margin: 20px 0;
+    }
+    .pricing-deduction {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #fce8ea;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .pricing-deduction .label { font-size: 0.85rem; color: #c8848a; }
+    .pricing-deduction .amount { font-size: 0.95rem; color: #c8848a; font-weight: 500; }
+    .pricing-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, #c8848a, #d4a0a5);
+      border-radius: 14px;
+      color: #fff;
+    }
+    .pricing-total .label { font-size: 1rem; letter-spacing: 0.05em; }
+    .pricing-total .amount { font-size: 1.5rem; font-weight: 700; }
+    .pricing-note { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px; line-height: 1.8; }
+
+    /* ===== 7. ELIGIBILITY ===== */
+    #eligibility { background: #fdfcfa; }
+    .eligibility-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .eligibility-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 28px;
+      border-top: 4px solid #e8b4b8;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+    .eligibility-card:hover { transform: translateY(-4px); }
+    .eligibility-num {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2.5rem;
+      color: #f0d0d3;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .eligibility-card h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 10px; color: #2d2d2d; }
+    .eligibility-card p { font-size: 0.82rem; color: #888; line-height: 1.8; }
+    .eligibility-note {
+      margin-top: 40px;
+      padding: 24px 30px;
+      background: linear-gradient(135deg, #fce8ea, #f9f0f0);
+      border-radius: 14px;
+      text-align: center;
+    }
+    .eligibility-note p { font-size: 0.88rem; color: #c8848a; }
+
+    /* ===== 8. SELECTION POINTS ===== */
+    #points { background: #f9f5f5; }
+    .points-list { display: flex; flex-direction: column; gap: 24px; max-width: 800px; margin: 0 auto; }
+    .point-item {
+      display: flex;
+      gap: 24px;
+      padding: 28px 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+      align-items: flex-start;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .point-item:hover { transform: translateX(8px); box-shadow: 0 6px 30px rgba(200,132,138,0.12); }
+    .point-num {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #c8848a, #e8b4b8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .point-content h3 { font-size: 1rem; font-weight: 500; margin-bottom: 8px; }
+    .point-content p { font-size: 0.85rem; color: #777; line-height: 1.8; }
+
+    /* ===== SNS ===== */
+    #sns { background: #fdfcfa; }
+    .sns-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .sns-tab {
+      padding: 10px 28px;
+      border-radius: 24px;
+      border: 1px solid #e0d0d0;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sns-tab.active, .sns-tab:hover {
+      background: #c8848a;
+      color: #fff;
+      border-color: #c8848a;
+    }
+    .sns-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .sns-post {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      position: relative;
+      cursor: pointer;
+      background: #f0e8e8;
+    }
+    .sns-post img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .sns-post:hover img { transform: scale(1.06); }
+    .sns-post-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(200,132,138,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .sns-post:hover .sns-post-overlay { opacity: 1; }
+    .sns-post-overlay span { color: #fff; font-size: 0.8rem; }
+    .sns-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #aaa;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+      min-height: 120px;
+    }
+    .sns-placeholder .icon { font-size: 2rem; }
+    .sns-follow-btns {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .sns-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 28px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sns-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .sns-btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+    .sns-btn-tt { background: #000; color: #fff; }
+    .sns-btn-line { background: #06C755; color: #fff; }
+
+    /* ===== CONTACT / LINE ===== */
+    #contact { background: linear-gradient(135deg, #2d2d2d 0%, #3d3535 100%); }
+    #contact .section-title { color: #fff; }
+    #contact .section-en { color: #e8b4b8; }
+    #contact .section-desc { color: #aaa; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .line-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+    .line-card h3 {
+      font-family: 'Noto Serif JP', serif;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .line-card p { font-size: 0.82rem; color: #aaa; margin-bottom: 24px; line-height: 1.7; }
+    .qr-placeholder {
+      width: 140px;
+      height: 140px;
+      background: #fff;
+      border-radius: 12px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: #999;
+      text-align: center;
+      padding: 12px;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .qr-placeholder .qr-icon { font-size: 2.5rem; }
+    .line-open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #06C755;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 28px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .line-open-btn:hover { background: #05b34c; transform: translateY(-2px); }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.78rem; color: #bbb; letter-spacing: 0.05em; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #e8b4b8;
+      background: rgba(255,255,255,0.1);
+    }
+    .form-group select option { background: #2d2d2d; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      background: linear-gradient(135deg, #c8848a, #d4a0a5);
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+      padding: 14px 40px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      align-self: flex-start;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,132,138,0.4); }
+
+    /* ===== COMPANY INFO ===== */
+    #company { background: #fdfcfa; }
+    .company-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .company-table { width: 100%; border-collapse: collapse; }
+    .company-table tr { border-bottom: 1px solid #f0e8e8; }
+    .company-table th {
+      width: 38%;
+      padding: 16px 14px;
+      font-size: 0.8rem;
+      color: #aaa;
+      font-weight: 400;
+      text-align: left;
+      vertical-align: top;
+    }
+    .company-table td {
+      padding: 16px 14px;
+      font-size: 0.88rem;
+      color: #444;
+      line-height: 1.7;
+    }
+    .company-map-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      height: 340px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    }
+    .company-map-wrap iframe { width: 100%; height: 100%; border: none; }
+    .map-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #f0e8e8, #f8f0f0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #c8848a;
+      font-size: 0.85rem;
+    }
+    .map-placeholder .map-icon { font-size: 3rem; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #1a1a1a;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 40px;
+    }
+    .footer-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      list-style: none;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-nav a { font-size: 0.78rem; color: rgba(255,255,255,0.5); text-decoration: none; }
+    .footer-nav a:hover { color: #e8b4b8; }
+    .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.3); }
+
+    /* ===== FLOATING PHONE BUTTON ===== */
+    .float-phone {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    .float-phone.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .float-phone-btn {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, #c8848a, #d4a0a5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(200, 132, 138, 0.5);
+      animation: phoneRing 2.8s ease-in-out infinite;
+      transition: transform 0.2s;
+    }
+    .float-phone:hover .float-phone-btn {
+      transform: scale(1.1);
+    }
+    .float-phone-icon {
+      font-size: 1.5rem;
+      animation: phoneShake 2.8s ease-in-out infinite;
+    }
+    .float-phone-label {
+      background: rgba(50, 30, 30, 0.78);
+      color: #fff;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+    }
+    @keyframes phoneRing {
+      0%, 100% { box-shadow: 0 4px 20px rgba(200,132,138,0.5); }
+      50%       { box-shadow: 0 4px 28px rgba(200,132,138,0.85), 0 0 0 10px rgba(200,132,138,0.12); }
+    }
+    @keyframes phoneShake {
+      0%, 55%, 100% { transform: rotate(0deg); }
+      5%  { transform: rotate(15deg); }
+      10% { transform: rotate(-15deg); }
+      15% { transform: rotate(12deg); }
+      20% { transform: rotate(-10deg); }
+      25% { transform: rotate(0deg); }
+    }
+
+    /* ===== PAGE TOP BUTTON ===== */
+    .page-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px; height: 48px;
+      background: #c8848a;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 900;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .page-top.visible { opacity: 1; transform: translateY(0); }
+    .page-top:hover { background: #b57078; }
+
+    /* ===== YOUTUBE MODAL ===== */
+    .yt-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+    .yt-modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .yt-modal-box {
+      position: relative;
+      width: min(88vw, 960px);
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+      opacity: 0;
+    }
+    .yt-modal-overlay.open .yt-modal-box {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    /* 16:9 responsive container */
+    .yt-modal-iframe-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+    .yt-modal-iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .yt-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: #111;
+    }
+    .yt-modal-title {
+      color: #fff;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      opacity: 0.85;
+    }
+    .yt-modal-close {
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .yt-modal-close:hover { background: rgba(255, 255, 255, 0.22); }
+    .yt-modal-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 60px 30px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+      text-align: center;
+      min-height: 200px;
+    }
+    .yt-modal-placeholder .yt-icon { font-size: 3rem; opacity: 0.4; }
+    .yt-modal-placeholder code {
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #e8b4b8;
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox-inner { position: relative; max-width: 90vw; max-height: 85vh; }
+    .lightbox-inner img { max-width: 100%; max-height: 85vh; border-radius: 8px; object-fit: contain; }
+    .lightbox-close {
+      position: absolute;
+      top: -40px; right: 0;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: none; border: none;
+    }
+
+    /* ===== HIGHLIGHT UNDERLINE ===== */
+    .hl {
+      position: relative;
+      display: inline;
+    }
+    .hl::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -0.05em;
+      width: 0;
+      height: 0.38em;
+      background: rgba(232, 180, 184, 0.52);
+      border-radius: 3px;
+      z-index: -1;
+      transition: width 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hl.hl-active::after { width: 100%; }
+
+    /* ===== RESPONSIVE ===== */
+
+    /* ========================================
+       PC 大画面 (1101px〜)
+       デフォルトの2カラムをそのまま使用
+       情報パネルのみ sticky スクロール追従
+    ======================================== */
+
+    /* ========================================
+       タブレット横向き (901px〜1100px)
+       2カラム維持・サイズ縮小・sticky解除
+    ======================================== */
+    @media (max-width: 1100px) {
+      .prop-layout {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+      .prop-info-panel {
+        padding: 22px 18px;
+        position: static;
+      }
+      .prop-name { font-size: 1.15rem; }
+      .prop-chips { gap: 5px; }
+      .prop-chip { font-size: 0.7rem; padding: 4px 9px; }
+      .prop-detail-table th { font-size: 0.7rem; padding: 9px 6px; }
+      .prop-detail-table td { font-size: 0.78rem; padding: 9px 6px; }
+      .prop-floor-grid { grid-template-columns: repeat(2, 1fr); }
+      .prop-photo-grid { grid-template-columns: repeat(3, 1fr); }
+      .prop-grid-item.prop-grid-featured { grid-column: span 2; grid-row: span 2; }
+      .prop-thumb { width: 60px; height: 44px; }
+      .prop-thumb-more { width: 60px; height: 44px; }
+    }
+
+    /* ========================================
+       タブレット縦向き / 共通 (〜900px)
+    ======================================== */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .features-grid { grid-template-columns: 1fr; gap: 20px; }
+      .location-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: repeat(2, 1fr); }
+      .meals-intro { grid-template-columns: 1fr; }
+      .meal-gallery { grid-template-columns: repeat(3, 1fr); }
+      .meal-item:first-child { grid-column: span 1; grid-row: span 1; }
+      .eligibility-grid { grid-template-columns: 1fr; }
+      .sns-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; }
+      .company-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 36px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .checklist-grid { grid-template-columns: 1fr; }
+
+      /* 物件：タブレット縦でも2カラム維持 */
+      .prop-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 18px;
+      }
+      .prop-photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .prop-grid-item.prop-grid-featured { grid-column: span 2; grid-row: span 2; }
+    }
+
+    /* ========================================
+       スマホ (〜767px)
+       1カラム縦積み・コンパクト化
+    ======================================== */
+    @media (max-width: 767px) {
+      section { padding: 70px 0; }
+      .container { padding: 0 14px; }
+      nav { padding: 0 14px; }
+
+      /* 物件：1カラム縦並び */
+      .prop-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+      .prop-gallery-col { overflow: hidden; }
+
+      /* カテゴリータブ */
+      .prop-cat-tab { padding: 6px 11px; font-size: 0.7rem; }
+
+      /* メインビューア */
+      .prop-main-viewer { aspect-ratio: 4/3; border-radius: 10px; }
+      .prop-nav-btn { width: 34px; height: 34px; font-size: 1rem; }
+      .prop-prev { left: 6px; }
+      .prop-next { right: 6px; }
+      .prop-fullscreen-btn { width: 28px; height: 28px; font-size: 0.75rem; bottom: 8px; right: 8px; }
+      .prop-photo-cat-badge, .prop-counter { font-size: 0.62rem; padding: 3px 8px; }
+
+      /* サムネイル */
+      .prop-thumbs { gap: 5px; margin-top: 7px; }
+      .prop-thumb { width: 54px; height: 40px; border-radius: 5px; border-width: 2px; }
+      .prop-thumb-more { width: 54px; height: 40px; font-size: 0.55rem; }
+
+      /* 情報パネル */
+      .prop-info-panel {
+        padding: 18px 14px;
+        border-radius: 14px;
+        position: static;
+        overflow: hidden;
+      }
+      .prop-name { font-size: 1.1rem; }
+      .prop-address { font-size: 0.72rem; margin-bottom: 10px; }
+      .prop-chips { gap: 5px; margin-bottom: 14px; }
+      .prop-chip { font-size: 0.68rem; padding: 4px 8px; }
+      /* テーブルが横スクロールしないよう th 幅を抑える */
+      .prop-detail-table { table-layout: fixed; width: 100%; }
+      .prop-detail-table th { width: 36%; padding: 8px 5px; font-size: 0.68rem; white-space: nowrap; }
+      .prop-detail-table td { padding: 8px 5px; font-size: 0.76rem; word-break: break-all; }
+      .prop-equip-tag { font-size: 0.62rem; padding: 2px 5px; }
+      .prop-divider { margin: 12px 0; }
+      .prop-btn-primary { font-size: 0.78rem; padding: 11px 6px; }
+      .prop-btn-secondary { width: 42px; font-size: 0.95rem; }
+
+      /* 間取り */
+      .prop-floor-section { margin-bottom: 30px; }
+      .prop-floor-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .prop-floor-label { font-size: 0.72rem; }
+      .prop-floor-info { padding: 8px 10px; }
+
+      /* 全写真グリッド */
+      .prop-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+      .prop-grid-item { border-radius: 7px; }
+      .prop-grid-item.prop-grid-featured { grid-column: span 1; grid-row: span 1; aspect-ratio: 4/3; }
+      /* スマホはラベル常時表示 */
+      .prop-grid-item-label { opacity: 1; font-size: 0.63rem; padding: 12px 7px 6px; }
+
+      /* ライトボックス：矢印を画面下部へ */
+      .prop-lb-nav { top: auto; bottom: 120px; transform: none; width: 40px; height: 40px; }
+      .prop-lb-prev { left: 8px; }
+      .prop-lb-next { right: 8px; }
+      .prop-lb-img { max-height: 54vh; border-radius: 8px; }
+      .prop-lb-thumb { width: 46px; height: 34px; }
+      .prop-lb-thumbs { gap: 5px; margin-top: 10px; }
+      .prop-lb-title { font-size: 0.75rem; }
+    }
+
+    /* ========================================
+       小型スマホ (〜480px)
+    ======================================== */
+    @media (max-width: 480px) {
+      .container { padding: 0 12px; }
+      .prop-cat-tab { padding: 5px 9px; font-size: 0.66rem; }
+      .prop-cat-tab .tab-count { display: none; }
+      .prop-thumb { width: 48px; height: 36px; }
+      .prop-thumb-more { width: 48px; height: 36px; }
+      .prop-floor-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .prop-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+      .prop-lb-img { max-height: 46vh; }
+      .prop-lb-nav { width: 36px; height: 36px; bottom: 106px; }
+      /* CTA縦並び */
+      .prop-cta-row { flex-direction: column; }
+      .prop-btn-secondary { width: 100%; height: 42px; }
+    }
+
+    /* ========================================
+       その他全体共通 (〜600px)
+    ======================================== */
+    @media (max-width: 600px) {
+      .video-grid { grid-template-columns: 1fr; }
+      .sns-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">アイリス・セカンド</a>
+  <ul class="nav-links">
+    <li><a href="#features">特徴</a></li>
+    <li><a href="#property">お部屋</a></li>
+    <li><a href="#location">周辺環境</a></li>
+    <li><a href="#meals">食事</a></li>
+    <li><a href="#pricing">料金</a></li>
+    <li><a href="#eligibility">対象者</a></li>
+    <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===== HERO SLIDER ===== -->
+<div class="hero" id="hero">
+  <!-- Slide 1 -->
+  <div class="slide active" id="slide-0">
+    <img class="slide-bg" src="picture/1.jpg" alt="明るいリビング" />
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-label">Group Home ○○</p>
+      <h1 class="slide-title">ここは、あなたの<br />大切なおうちです</h1>
+      <p class="slide-sub">安心・快適・自分らしく暮らせる場所</p>
+    </div>
+  </div>
+  <!-- Slide 2 -->
+  <div class="slide" id="slide-1">
+    <img class="slide-bg" src="picture/2.jpg" alt="食事の様子" />
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-label">Meal & Life</p>
+      <h1 class="slide-title">毎日の食事が<br />笑顔をつくる</h1>
+      <p class="slide-sub">栄養バランスを考えた手作りの食事をご提供</p>
+    </div>
+  </div>
+  <!-- Slide 3 -->
+  <div class="slide" id="slide-2">
+    <img class="slide-bg" src="picture/3.jpg" alt="清潔な個室" />
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-label">Your Private Room</p>
+      <h1 class="slide-title">ゆとりある個室で<br />プライベートを守る</h1>
+      <p class="slide-sub">家具・家電完備の清潔な個室</p>
+    </div>
+  </div>
+  <!-- Slide 4 -->
+  <div class="slide" id="slide-3">
+    <img class="slide-bg" src="picture/4.jpg" alt="周辺の自然" />
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-label">Comfortable Location</p>
+      <h1 class="slide-title">便利な立地と<br />豊かな自然が調和</h1>
+      <p class="slide-sub">駅近・スーパー・病院が徒歩圏内</p>
+    </div>
+  </div>
+
+  <button class="slider-btn slider-prev" onclick="changeSlide(-1)">&#8249;</button>
+  <button class="slider-btn slider-next" onclick="changeSlide(1)">&#8250;</button>
+  <div class="slider-dots">
+    <div class="dot active" onclick="goToSlide(0)"></div>
+    <div class="dot" onclick="goToSlide(1)"></div>
+    <div class="dot" onclick="goToSlide(2)"></div>
+    <div class="dot" onclick="goToSlide(3)"></div>
+  </div>
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- ===== 1. FEATURES ===== -->
+<section id="features">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Features</span>
+      <div class="recruit-badge">入居者募集中</div>
+      <h2 class="section-title">アイリス・セカンドが<br>選ばれる６つの理由</h2>
+    </div>
+
+    <!-- キャッチコピー -->
+    <p class="features-catch fade-up">
+      自分の時間を大切にできる<strong><span class="hl">完全個室！１ルーム</span></strong>の障害者グループホーム。<br>
+      アイリス・セカンドは入居者様が<strong><span class="hl">安心で安全</span></strong>に、<br>
+      <span class="hl">楽しく自立・自己成長</span>ができるグループホームです。
+    </p>
+
+    <!-- チェックリスト -->
+    <div class="checklist-grid">
+      <div class="check-item fade-up stagger-1">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text"><span class="hl">楽しく自立・自己成長</span>ができるグループホーム</span>
+      </div>
+      <div class="check-item fade-up stagger-2">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text">将来<span class="hl">１人で生活できる力</span>を身に着けてほしい方へ</span>
+      </div>
+      <div class="check-item fade-up stagger-3">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text">体力的に娘・息子のサポートが難しくなってきた</span>
+      </div>
+      <div class="check-item fade-up stagger-4">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text">沢山の新しい経験をしてほしいご家族の方</span>
+      </div>
+      <div class="check-item fade-up stagger-1">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text">安全で楽しいグループホームをお探しの方</span>
+      </div>
+      <div class="check-item fade-up stagger-2">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text"><span class="hl">広々とした個室空間</span>でゆったりと過ごしたい方</span>
+      </div>
+      <div class="check-item fade-up stagger-3" style="grid-column: 1 / -1; max-width: 480px; margin: 0 auto;">
+        <div class="cb-box">
+          <svg viewBox="0 0 28 28">
+            <rect class="cb-rect" x="1" y="1" width="26" height="26" rx="5"/>
+            <rect class="cb-fill" x="1" y="1" width="26" height="26" rx="5"/>
+            <polyline class="cb-check" points="6,14 11,20 22,8"/>
+          </svg>
+        </div>
+        <span class="check-text"><span class="hl">完全プライベート</span>　１室１人で利用可能</span>
+      </div>
+    </div>
+
+    <!-- 6つの理由カード -->
+    <div class="features-grid">
+      <div class="feature-card fade-up stagger-1">
+        <div class="feature-icon">🏠</div>
+        <h3 class="feature-title"><span class="hl">完全個室・１ルーム</span></h3>
+        <p class="feature-text">鍵付きの完全プライベート個室。自分だけの空間でゆったりとした時間を過ごせます。</p>
+      </div>
+      <div class="feature-card fade-up stagger-2">
+        <div class="feature-icon">🌱</div>
+        <h3 class="feature-title"><span class="hl">自立・自己成長</span>を支援</h3>
+        <p class="feature-text">将来の一人暮らしを見据えたスキルを、楽しみながら身につけられる環境を整えています。</p>
+      </div>
+      <div class="feature-card fade-up stagger-3">
+        <div class="feature-icon">🛡️</div>
+        <h3 class="feature-title"><span class="hl">安心・安全</span>なサポート</h3>
+        <p class="feature-text">経験豊富なスタッフが常に見守ります。ご家族も安心して任せていただける体制です。</p>
+      </div>
+      <div class="feature-card fade-up stagger-1">
+        <div class="feature-icon">✨</div>
+        <h3 class="feature-title">新しい経験・出会い</h3>
+        <p class="feature-text">グループホームでの共同生活を通じて、豊かな人間関係と新しい経験を積み重ねられます。</p>
+      </div>
+      <div class="feature-card fade-up stagger-2">
+        <div class="feature-icon">👨‍👩‍👧</div>
+        <h3 class="feature-title">ご家族の負担を軽減</h3>
+        <p class="feature-text">体力的・精神的なサポートが難しくなってきたご家族に代わり、プロが責任を持って支援します。</p>
+      </div>
+      <div class="feature-card fade-up stagger-3">
+        <div class="feature-icon">🌸</div>
+        <h3 class="feature-title">楽しく明るい雰囲気</h3>
+        <p class="feature-text">ホテルのような清潔感と、家庭のような温かさを兼ね備えた居心地の良い空間です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. PROPERTY ===== -->
+<section id="property">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Room & Floor Plan</span>
+      <h2 class="section-title">お部屋・間取り情報</h2>
+      <p class="section-desc">写真・間取り・設備情報をくわしくご確認いただけます</p>
+    </div>
+
+    <!-- メインレイアウト：ギャラリー ＋ 情報パネル -->
+    <div class="prop-layout fade-up">
+
+      <!-- 左：フォトギャラリー -->
+      <div class="prop-gallery-col">
+        <!-- カテゴリータブ -->
+        <div class="prop-cat-tabs" id="propCatTabs">
+          <button class="prop-cat-tab active" data-cat="all">すべて <span class="tab-count" id="countAll">0</span></button>
+          <button class="prop-cat-tab" data-cat="exterior">外観 <span class="tab-count" id="countExterior">0</span></button>
+          <button class="prop-cat-tab" data-cat="room">個室 <span class="tab-count" id="countRoom">0</span></button>
+          <button class="prop-cat-tab" data-cat="living">リビング <span class="tab-count" id="countLiving">0</span></button>
+          <button class="prop-cat-tab" data-cat="kitchen">キッチン <span class="tab-count" id="countKitchen">0</span></button>
+          <button class="prop-cat-tab" data-cat="bath">浴室・洗面 <span class="tab-count" id="countBath">0</span></button>
+          <button class="prop-cat-tab" data-cat="floorplan">間取り <span class="tab-count" id="countFloorplan">0</span></button>
+        </div>
+
+        <!-- メイン画像ビューア -->
+        <div class="prop-main-viewer" id="propMainViewer" onclick="propOpenLightbox(propCurrentIndex)">
+          <img class="prop-main-img" id="propMainImg" src="" alt="" />
+          <div class="prop-viewer-top">
+            <span class="prop-photo-cat-badge" id="propCatBadge">外観</span>
+            <span class="prop-counter" id="propCounter">1 / 1</span>
+          </div>
+          <button class="prop-nav-btn prop-prev" onclick="event.stopPropagation(); propNav(-1)">&#8249;</button>
+          <button class="prop-nav-btn prop-next" onclick="event.stopPropagation(); propNav(1)">&#8250;</button>
+          <button class="prop-fullscreen-btn" onclick="event.stopPropagation(); propOpenLightbox(propCurrentIndex)" title="全画面表示">⤢</button>
+        </div>
+
+        <!-- サムネイルストリップ -->
+        <div class="prop-thumbs" id="propThumbs"></div>
+      </div>
+
+      <!-- 右：物件情報パネル -->
+      <div class="prop-info-panel">
+        <div class="prop-status">入居受付中</div>
+        <h3 class="prop-name">アイリス・セカンド</h3>
+        <p class="prop-address">〒547-0044　大阪府大阪市平野区西脇2-10-16</p>
+
+        <div class="prop-chips">
+          <span class="prop-chip">🏠 個室 8〜10畳</span>
+          <span class="prop-chip">👤 1室1名</span>
+          <span class="prop-chip">🔑 鍵付き完全個室</span>
+          <span class="prop-chip">📶 Wi-Fi完備</span>
+          <span class="prop-chip">🚉 駅徒歩5分</span>
+        </div>
+
+        <table class="prop-detail-table">
+          <tr><th>物件名</th><td>アイリス・セカンド</td></tr>
+          <tr><th>所在地</th><td>〒547-0044 大阪府大阪市平野区西脇2-10-16</td></tr>
+          <tr><th>居室面積</th><td>約 8〜10 畳</td></tr>
+          <tr><th>定員</th><td>○名（全 ○室）</td></tr>
+          <tr><th>建物構造</th><td>鉄筋コンクリート造</td></tr>
+          <tr><th>築年数</th><td>○年（○○○○年築）</td></tr>
+          <tr><th>階数</th><td>○階建て / ○階</td></tr>
+          <tr><th>向き</th><td>南向き</td></tr>
+          <tr>
+            <th>設備・家電</th>
+            <td>
+              <div class="prop-equip-list">
+                <span class="prop-equip-tag">エアコン</span>
+                <span class="prop-equip-tag">冷蔵庫</span>
+                <span class="prop-equip-tag">洗濯機</span>
+                <span class="prop-equip-tag">電子レンジ</span>
+                <span class="prop-equip-tag">テレビ</span>
+                <span class="prop-equip-tag">Wi-Fi</span>
+                <span class="prop-equip-tag">収納家具</span>
+                <span class="prop-equip-tag">カーテン</span>
+              </div>
+            </td>
+          </tr>
+          <tr><th>共用設備</th><td>リビング・キッチン・浴室・洗面台・トイレ・駐輪場</td></tr>
+          <tr><th>ペット</th><td>不可</td></tr>
+          <tr><th>見学</th><td>随時対応可（要予約）</td></tr>
+        </table>
+
+        <div class="prop-divider"></div>
+
+        <div class="prop-cta-row">
+          <button class="prop-btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+            📅 見学を申し込む
+          </button>
+          <button class="prop-btn-secondary" onclick="window.location.href='tel:09059062538'" title="電話する">📞</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 間取り図セクション -->
+    <div class="prop-floor-section fade-up">
+      <div class="prop-floor-header">
+        <h3>間取り図</h3>
+        <span style="font-size:0.78rem;color:#aaa;">クリックで拡大表示</span>
+      </div>
+      <div class="prop-floor-grid" id="propFloorGrid"></div>
+    </div>
+
+    <!-- 全写真グリッド -->
+    <div class="fade-up">
+      <div class="prop-grid-header">
+        <h3>全ての写真</h3>
+        <span class="prop-grid-count" id="propGridCount"></span>
+      </div>
+      <div class="prop-photo-grid" id="propPhotoGrid"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Property Lightbox -->
+<div class="prop-lightbox" id="propLightbox" onclick="propCloseLightbox()">
+  <div class="prop-lb-inner" onclick="event.stopPropagation()">
+    <div class="prop-lb-top">
+      <span class="prop-lb-title" id="propLbTitle"></span>
+      <span class="prop-lb-counter" id="propLbCounter"></span>
+    </div>
+    <button class="prop-lb-close" onclick="propCloseLightbox()">✕</button>
+    <img class="prop-lb-img" id="propLbImg" src="" alt="" />
+    <div class="prop-lb-thumbs" id="propLbThumbs"></div>
+  </div>
+  <button class="prop-lb-nav prop-lb-prev" onclick="event.stopPropagation(); propLbNav(-1)">&#8249;</button>
+  <button class="prop-lb-nav prop-lb-next" onclick="event.stopPropagation(); propLbNav(1)">&#8250;</button>
+</div>
+
+<!-- ===== 3. LOCATION ===== -->
+<section id="location">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Location</span>
+      <h2 class="section-title">周辺環境・アクセス</h2>
+      <p class="section-desc">〒547-0044　大阪市平野区西脇2-10-16<br>スーパー・病院・駅がすべて徒歩圏内の便利な立地です</p>
+    </div>
+    <div class="location-grid">
+      <div class="location-map-placeholder fade-left">
+        <iframe
+          src="https://maps.google.com/maps?q=%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%B9%B3%E9%87%8E%E5%8C%BA%E8%A5%BF%E8%84%872-10-16&output=embed&hl=ja&z=16"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div class="location-items fade-right">
+        <div class="location-item stagger-1">
+          <div class="loc-icon">🚇</div>
+          <div class="loc-info">
+            <h4>大阪メトロ谷町線「平野駅」</h4>
+            <p>3番出口（西脇方面）より徒歩約8分</p>
+          </div>
+          <span class="loc-time">徒歩 約8分</span>
+        </div>
+        <div class="location-item stagger-2">
+          <div class="loc-icon">🚃</div>
+          <div class="loc-info">
+            <h4>JR関西本線「平野駅」</h4>
+            <p>大和路線利用可・JRなんばまで約13分</p>
+          </div>
+          <span class="loc-time">徒歩 約10分</span>
+        </div>
+        <div class="location-item stagger-3">
+          <div class="loc-icon">🏪</div>
+          <div class="loc-info">
+            <h4>セブンイレブン 大阪西脇2丁目店</h4>
+            <p>西脇2丁目10-14　24時間営業</p>
+          </div>
+          <span class="loc-time">徒歩 約1分</span>
+        </div>
+        <div class="location-item stagger-1">
+          <div class="loc-icon">🛒</div>
+          <div class="loc-info">
+            <h4>ライフ 平野西脇店</h4>
+            <p>西脇4-7-6　9:00〜22:00 駐車場37台</p>
+          </div>
+          <span class="loc-time">徒歩 約7分</span>
+        </div>
+        <div class="location-item stagger-2">
+          <div class="loc-icon">🏥</div>
+          <div class="loc-info">
+            <h4>やまおか内科クリニック</h4>
+            <p>西脇3丁目　内科・訪問診療対応</p>
+          </div>
+          <span class="loc-time">徒歩 約5分</span>
+        </div>
+        <div class="location-item stagger-3">
+          <div class="loc-icon">🧠</div>
+          <div class="loc-info">
+            <h4>平野けいじんクリニック</h4>
+            <p>内科・精神科・神経科　谷町線平野駅徒歩5分</p>
+          </div>
+          <span class="loc-time">徒歩 約12分</span>
+        </div>
+        <div class="location-item stagger-1">
+          <div class="loc-icon">🏣</div>
+          <div class="loc-info">
+            <h4>平野郵便局</h4>
+            <p>平野区平野西3-1-5　ATM・各種窓口</p>
+          </div>
+          <span class="loc-time">徒歩 約10分</span>
+        </div>
+        <div class="location-item stagger-2">
+          <div class="loc-icon">🌳</div>
+          <div class="loc-info">
+            <h4>西脇公園・背戸口公園</h4>
+            <p>近隣の緑地　散歩・運動に最適</p>
+          </div>
+          <span class="loc-time">徒歩 約3分</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. ROOM TOUR VIDEO ===== -->
+<section id="roomtour">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Room Tour</span>
+      <h2 class="section-title">動画ルームツアー</h2>
+      <p class="section-desc" style="color:#aaa">実際の雰囲気を動画でご確認いただけます</p>
+    </div>
+    <div class="video-grid">
+      <div class="video-card fade-up stagger-1" data-yt="XXXXXXXXXX1" data-title="個室のご紹介">
+        <img class="video-thumb" src="picture/5.jpg" alt="個室ツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 個室のご紹介</div>
+      </div>
+      <div class="video-card fade-up stagger-2" data-yt="XXXXXXXXXX2" data-title="リビング・共有スペース">
+        <img class="video-thumb" src="picture/6.jpg" alt="リビングツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 リビング・共有スペース</div>
+      </div>
+      <div class="video-card fade-up stagger-3" data-yt="XXXXXXXXXX3" data-title="キッチン・食堂">
+        <img class="video-thumb" src="picture/7.jpg" alt="キッチンツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 キッチン・食堂</div>
+      </div>
+      <div class="video-card fade-up stagger-1" data-yt="XXXXXXXXXX4" data-title="浴室・洗面">
+        <img class="video-thumb" src="picture/8.jpg" alt="浴室ツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 浴室・洗面</div>
+      </div>
+      <div class="video-card fade-up stagger-2" data-yt="XXXXXXXXXX5" data-title="周辺環境のご紹介">
+        <img class="video-thumb" src="picture/9.jpg" alt="周辺環境ツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 周辺環境のご紹介</div>
+      </div>
+      <div class="video-card fade-up stagger-3" data-yt="XXXXXXXXXX6" data-title="日常生活の1日">
+        <img class="video-thumb" src="picture/10.jpg" alt="日常生活ツアー" />
+        <div class="video-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-label">🎬 日常生活の1日</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. MEALS ===== -->
+<section id="meals">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Meal Gallery</span>
+      <h2 class="section-title">食事のご紹介</h2>
+      <p class="section-desc">毎日の食事で健康と笑顔をサポートします</p>
+    </div>
+    <div class="meals-intro">
+      <div class="meals-text fade-left">
+        <h3>栄養バランスを考えた<br />手作りの温かい食事</h3>
+        <p>栄養士のアドバイスをもとに、旬の食材を使った手作り料理を毎日3食ご提供しています。アレルギーや好き嫌いにも可能な限り対応いたします。食事は入居者の皆様が楽しみにされている大切な時間です。</p>
+        <div class="meals-highlights">
+          <div class="meal-point">
+            <div class="num">3食</div>
+            <div class="lbl">毎日提供</div>
+          </div>
+          <div class="meal-point">
+            <div class="num">旬</div>
+            <div class="lbl">季節の食材</div>
+          </div>
+          <div class="meal-point">
+            <div class="num">手作り</div>
+            <div class="lbl">温かい料理</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-right">
+        <img src="picture/11.jpg" alt="食事" style="width:100%;border-radius:20px;object-fit:cover;aspect-ratio:4/3;" />
+      </div>
+    </div>
+    <div class="meal-gallery">
+      <div class="meal-item fade-up">
+        <img src="picture/12.jpg" alt="和食" />
+      </div>
+      <div class="meal-item fade-up stagger-1">
+        <img src="picture/13.jpg" alt="洋食" />
+      </div>
+      <div class="meal-item fade-up stagger-2">
+        <img src="picture/14.jpg" alt="サラダ" />
+      </div>
+      <div class="meal-item fade-up stagger-3">
+        <img src="picture/15.jpg" alt="スープ" />
+      </div>
+      <div class="meal-item fade-up stagger-4">
+        <img src="picture/16.jpg" alt="デザート" />
+      </div>
+      <div class="meal-item fade-up stagger-1">
+        <img src="picture/17.jpg" alt="朝食" />
+      </div>
+      <div class="meal-item fade-up stagger-2">
+        <img src="picture/18.jpg" alt="昼食" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. PRICING ===== -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Monthly Fee</span>
+      <h2 class="section-title">料金・月々の費用</h2>
+      <p class="section-desc">透明性のある料金体系で、安心してご利用いただけます</p>
+    </div>
+    <div class="pricing-card fade-up">
+      <p class="pricing-title-inner">月額費用の内訳</p>
+      <div class="pricing-rows">
+        <div class="pricing-row">
+          <span class="pricing-label"><span class="dot-pink"></span>家賃</span>
+          <span class="pricing-amount"><span class="hl">40,000円</span></span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-label"><span class="dot-pink"></span>食材料金</span>
+          <span class="pricing-amount"><span class="hl">33,000円</span></span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-label"><span class="dot-pink"></span>日用品費</span>
+          <span class="pricing-amount"><span class="hl">3,000円</span></span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-label"><span class="dot-pink"></span>水道光熱費</span>
+          <span class="pricing-amount"><span class="hl">15,000円</span></span>
+        </div>
+        <div class="pricing-row">
+          <span class="pricing-label"><span class="dot-pink"></span>管理費</span>
+          <span class="pricing-amount"><span class="hl">3,000円</span></span>
+        </div>
+      </div>
+      <div class="pricing-divider"></div>
+      <div class="pricing-deduction">
+        <span class="label">▼ 特定障がい者特別給付費（補足給付）</span>
+        <span class="amount">－10,000円</span>
+      </div>
+      <div class="pricing-total">
+        <span class="label">月額合計（目安）</span>
+        <span class="amount"><span class="hl" style="color:#fff;">84,000円</span></span>
+      </div>
+      <p class="pricing-note">
+        ※上記は目安金額です。収入状況等により自己負担額が変わる場合があります。<br />
+        ※特定障がい者特別給付費（補足給付）は所得に応じて支給されます。詳しくはお問い合わせください。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. ELIGIBILITY ===== -->
+<section id="eligibility">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Who Can Use</span>
+      <h2 class="section-title">ご利用対象者</h2>
+      <p class="section-desc">以下の条件を満たす方がご利用いただけます</p>
+    </div>
+    <div class="eligibility-grid">
+      <div class="eligibility-card fade-up stagger-1">
+        <div class="eligibility-num">01</div>
+        <h3><span class="hl">知的・精神障がい</span>をお持ちの方</h3>
+        <p>知的障がい・精神障がいをお持ちの方を対象としています。障がいの程度に関わらず、まずはご相談ください。</p>
+      </div>
+      <div class="eligibility-card fade-up stagger-2">
+        <div class="eligibility-num">02</div>
+        <h3><span class="hl">障害福祉サービス受給者証</span>をお持ちの方</h3>
+        <p>障害福祉サービス受給者証をお持ちの方が対象です。お持ちでない方も、取得のサポートをいたします。</p>
+      </div>
+      <div class="eligibility-card fade-up stagger-3">
+        <div class="eligibility-num">03</div>
+        <h3><span class="hl">日中活動先がある方</span></h3>
+        <p>就労継続支援・就労移行支援・生活介護等の日中活動先がある方。<span class="hl">活動先のご紹介</span>も承っています。</p>
+      </div>
+    </div>
+    <div class="eligibility-note fade-up">
+      <p>🌸 日中活動先がない方でも、<strong><span class="hl">こちらでご紹介が可能</span></strong>です。まずはお気軽にご相談ください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. SELECTION POINTS ===== -->
+<section id="points">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">How to Choose</span>
+      <h2 class="section-title">グループホームを選ぶ時のポイント</h2>
+      <p class="section-desc">後悔しないグループホーム選びのために確認すべき大切なポイント</p>
+    </div>
+    <div class="points-list">
+      <div class="point-item fade-up">
+        <div class="point-num">1</div>
+        <div class="point-content">
+          <h3>完全個室プライベート空間での生活ができます</h3>
+          <p>アイリス・セカンドでは、全室が完全個室です。自分だけの鍵付きプライベートルームで、他の入居者を気にせずゆったりとリラックスできます。居心地の良い自分の部屋があることで、毎日の生活にメリハリが生まれ、精神的な安定にもつながります。家具・家電の持ち込みも歓迎ですので、自分らしい空間づくりをお楽しみください。</p>
+        </div>
+      </div>
+      <div class="point-item fade-up stagger-1">
+        <div class="point-num">2</div>
+        <div class="point-content">
+          <h3>日中活動先などのご紹介もできます</h3>
+          <p>「退院後、まず何から始めればいい？」そんな不安をお持ちの方にも安心です。就労継続支援事業所・生活介護・地域活動支援センターなど、あなたの状況や希望に合った日中活動先をスタッフがご紹介します。初めての見学や手続きも一緒にサポートしますので、一人で悩まず気軽にご相談ください。</p>
+        </div>
+      </div>
+      <div class="point-item fade-up stagger-2">
+        <div class="point-num">3</div>
+        <div class="point-content">
+          <h3>夜間・休日も世話人が常駐しています</h3>
+          <p>グループホームを選ぶ際に特に重要なのが、夜間・休日の体制です。アイリス・セカンドでは、夜間・休日も経験豊富な世話人が常駐しており、急な体調変化や緊急時にも迅速に対応できる環境を整えています。「いざというとき誰かいてくれるか不安」という方も、安心してお休みいただけます。</p>
+        </div>
+      </div>
+      <div class="point-item fade-up stagger-3">
+        <div class="point-num">4</div>
+        <div class="point-content">
+          <h3>市外・県外からのご相談も大歓迎！</h3>
+          <p>「今の地域を離れて新しい環境でやり直したい」「大阪での暮らしに興味がある」——そんな方も遠慮なくご連絡ください。オンラインでの事前相談・見学も対応しており、遠方からのご入居実績も多数あります。行政手続きや引っ越しのアドバイスなど、入居前から入居後まで一貫してサポートします。まずはお気軽にLINEやお電話でどうぞ。</p>
+        </div>
+      </div>
+      <div class="point-item fade-up stagger-1">
+        <div class="point-num">5</div>
+        <div class="point-content">
+          <h3>個性の尊重と尊厳を大切にします</h3>
+          <p>ここでの生活に「正解」はありません。起きる時間、好きな食べ物、趣味、ペースーーすべてあなた自身のものです。私たちスタッフは、画一的なルールで管理するのではなく、一人ひとりの価値観・生活スタイルを尊重したサポートを心がけています。「自分らしく生きること」を、ここでは当たり前のこととして大切にしています。</p>
+        </div>
+      </div>
+      <div class="point-item fade-up stagger-2">
+        <div class="point-num">6</div>
+        <div class="point-content">
+          <h3>自立に向けて本気で歩みたいあなたへ</h3>
+          <p>アイリス・セカンドは、グループホームを「ゴール」ではなく「ステップ」と考えています。「いつかひとりで暮らしたい」「仕事に就きたい」「地域でもっと活動したい」——そんな前向きな気持ちを持つ方を、スタッフ全員で全力で応援します。毎日の生活習慣の定着から就労・退居まで、あなたの目標に向けた具体的な支援計画を一緒に立てていきましょう。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SNS ===== -->
+<section id="sns">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Social Media</span>
+      <h2 class="section-title">SNS・最新情報</h2>
+      <p class="section-desc">日常の様子をInstagram・TikTokで発信しています</p>
+    </div>
+    <div class="sns-tabs">
+      <button class="sns-tab active" onclick="switchSNS('ig', this)">📷 Instagram</button>
+      <button class="sns-tab" onclick="switchSNS('tt', this)">🎵 TikTok</button>
+    </div>
+    <div class="sns-grid" id="snsGrid">
+      <!-- Instagram placeholder posts -->
+      <div class="sns-post fade-up stagger-1">
+        <img src="picture/19.jpg" alt="投稿1" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-2">
+        <img src="picture/20.jpg" alt="投稿2" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-3">
+        <img src="picture/21.jpg" alt="投稿3" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-4">
+        <img src="picture/22.jpg" alt="投稿4" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-1">
+        <img src="picture/23.jpg" alt="投稿5" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-2">
+        <img src="picture/24.jpg" alt="投稿6" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-3">
+        <img src="picture/25.jpg" alt="投稿7" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+      <div class="sns-post fade-up stagger-4">
+        <img src="picture/26.jpg" alt="投稿8" />
+        <div class="sns-post-overlay"><span>📸 詳細を見る</span></div>
+      </div>
+    </div>
+    <div class="sns-follow-btns">
+      <a href="#" class="sns-btn sns-btn-ig">📷 Instagramをフォロー</a>
+      <a href="#" class="sns-btn sns-btn-tt">🎵 TikTokをフォロー</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT / LINE ===== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Contact</span>
+      <h2 class="section-title">お問い合わせ・LINE相談</h2>
+      <p class="section-desc" style="color:#aaa"><span class="hl" style="color:#ccc;">お気軽にご相談ください。見学も随時受け付けています</span></p>
+    </div>
+    <div class="contact-grid">
+      <!-- LINE -->
+      <div class="line-card fade-left">
+        <h3>公式LINEで気軽に相談</h3>
+        <p>LINEなら文章でも音声でも<br />気軽にお問い合わせいただけます。<br />スタッフが丁寧にお答えします。</p>
+        <div class="qr-placeholder">
+          <span class="qr-icon">📱</span>
+          <span>QRコードを<br />こちらに設置</span>
+        </div>
+        <a href="https://line.me/R/ti/p/@xxxxxxxx" class="line-open-btn">
+          💬 LINEで相談する
+        </a>
+        <p style="font-size:0.72rem;color:#666;margin-top:14px;">↑ URLはLINE公式アカウントのものに変更してください</p>
+      </div>
+
+      <!-- Form -->
+      <div class="fade-right">
+        <form class="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>お名前 <span style="color:#e8b4b8">*</span></label>
+              <input type="text" placeholder="山田 太郎" required />
+            </div>
+            <div class="form-group">
+              <label>フリガナ</label>
+              <input type="text" placeholder="ヤマダ タロウ" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>電話番号</label>
+              <input type="tel" placeholder="090-0000-0000" />
+            </div>
+            <div class="form-group">
+              <label>メールアドレス <span style="color:#e8b4b8">*</span></label>
+              <input type="email" placeholder="example@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>お問い合わせ種別</label>
+            <select>
+              <option value="">選択してください</option>
+              <option>入居について相談したい</option>
+              <option>見学を希望する</option>
+              <option>料金について確認したい</option>
+              <option>日中活動先について相談したい</option>
+              <option>その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>メッセージ</label>
+            <textarea placeholder="ご質問・ご要望などをご記入ください"></textarea>
+          </div>
+          <button type="submit" class="form-submit">送信する →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPANY ===== -->
+<section id="company">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-en">Company Info</span>
+      <h2 class="section-title">会社情報・アクセス</h2>
+    </div>
+    <div class="company-grid">
+      <div class="fade-left">
+        <table class="company-table">
+          <tr>
+            <th>会社名</th>
+            <td>株式会社 ○○○○</td>
+          </tr>
+          <tr>
+            <th>グループホーム名</th>
+            <td>アイリス・セカンド</td>
+          </tr>
+          <tr>
+            <th>所在地</th>
+            <td>〒547-0044<br />大阪府大阪市平野区西脇2-10-16</td>
+          </tr>
+          <tr>
+            <th>電話番号</th>
+            <td><a href="tel:000-0000-0000" style="color:#c8848a;text-decoration:none;">000-0000-0000</a></td>
+          </tr>
+          <tr>
+            <th>メールアドレス</th>
+            <td><a href="mailto:info@example.com" style="color:#c8848a;text-decoration:none;">info@example.com</a></td>
+          </tr>
+          <tr>
+            <th>管理者氏名</th>
+            <td>○○ ○○（管理者）</td>
+          </tr>
+          <tr>
+            <th>管理者連絡先</th>
+            <td><a href="tel:000-0000-0000" style="color:#c8848a;text-decoration:none;">000-0000-0000</a></td>
+          </tr>
+          <tr>
+            <th>事業所番号</th>
+            <td>0000000000</td>
+          </tr>
+          <tr>
+            <th>指定事業</th>
+            <td>共同生活援助（グループホーム）</td>
+          </tr>
+          <tr>
+            <th>営業時間</th>
+            <td>9:00〜18:00（見学・相談 随時）</td>
+          </tr>
+        </table>
+      </div>
+      <div class="fade-right">
+        <div class="company-map-wrap">
+          <!-- 実際のGoogle Maps埋め込みコードに置き換えてください -->
+          <iframe
+            src="https://maps.google.com/maps?q=%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E5%B9%B3%E9%87%8E%E5%8C%BA%E8%A5%BF%E8%84%872-10-16&output=embed&hl=ja&z=17"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div style="text-align:center;margin-top:16px;">
+          <a href="https://www.google.com/maps/search/?api=1&query=大阪府大阪市平野区西脇2-10-16" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;color:#c8848a;font-size:0.85rem;text-decoration:none;border:1px solid #e8b4b8;padding:8px 20px;border-radius:20px;">
+            📍 Google マップで開く
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">アイリス・セカンド</div>
+  <ul class="footer-nav">
+    <li><a href="#features">特徴</a></li>
+    <li><a href="#property">お部屋</a></li>
+    <li><a href="#location">周辺環境</a></li>
+    <li><a href="#roomtour">ルームツアー</a></li>
+    <li><a href="#meals">食事</a></li>
+    <li><a href="#pricing">料金</a></li>
+    <li><a href="#eligibility">対象者</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 アイリス・セカンド All Rights Reserved.</p>
+</footer>
+
+<!-- ===== YOUTUBE MODAL ===== -->
+<div class="yt-modal-overlay" id="ytModal" onclick="closeYtModal(event)">
+  <div class="yt-modal-box" id="ytModalBox">
+    <div class="yt-modal-header">
+      <span class="yt-modal-title" id="ytModalTitle"></span>
+      <button class="yt-modal-close" onclick="closeYtModal()">✕</button>
+    </div>
+    <div id="ytModalContent"></div>
+  </div>
+</div>
+
+<!-- Floating Phone Button -->
+<a href="tel:09059062538" class="float-phone" id="floatPhone">
+  <div class="float-phone-btn">
+    <span class="float-phone-icon">📞</span>
+  </div>
+  <span class="float-phone-label">09059062538</span>
+</a>
+
+<!-- Page Top -->
+<a href="#hero" class="page-top" id="pageTop">↑</a>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  /* ---- SLIDER ---- */
+  let currentSlide = 0;
+  const totalSlides = 4;
+  let sliderTimer;
+
+  function goToSlide(n) {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = (n + totalSlides) % totalSlides;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+    resetTimer();
+  }
+
+  function changeSlide(dir) { goToSlide(currentSlide + dir); }
+
+  function resetTimer() {
+    clearInterval(sliderTimer);
+    sliderTimer = setInterval(() => goToSlide(currentSlide + 1), 4000);
+  }
+
+  resetTimer();
+
+  /* ---- NAVIGATION ---- */
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+    const show = window.scrollY > 400;
+    document.getElementById('pageTop').classList.toggle('visible', show);
+    document.getElementById('floatPhone').classList.toggle('visible', show);
+  });
+
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'fixed';
+    links.style.top = '70px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = '#fff';
+    links.style.padding = '20px 40px';
+    links.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+    links.style.zIndex = '999';
+  }
+
+  /* ---- SCROLL ANIMATIONS ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const title = entry.target.querySelector?.('.section-title');
+        if (title) title.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  // Observe animated elements
+  document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => observer.observe(el));
+
+  /* ---- CHECKBOX ANIMATION ---- */
+  const checkObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // staggered delay based on position in grid
+        const items = Array.from(document.querySelectorAll('.check-item'));
+        const idx = items.indexOf(entry.target);
+        setTimeout(() => {
+          entry.target.classList.add('checked');
+        }, idx * 120);
+        checkObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.check-item').forEach(el => checkObserver.observe(el));
+
+  /* ---- HIGHLIGHT UNDERLINE ---- */
+  const hlObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const els = Array.from(entry.target.querySelectorAll ? entry.target.querySelectorAll('.hl') : []);
+        // If the observed element itself is .hl
+        if (entry.target.classList.contains('hl')) {
+          setTimeout(() => entry.target.classList.add('hl-active'), 120);
+        }
+        // Children
+        els.forEach((el, i) => setTimeout(() => el.classList.add('hl-active'), 120 + i * 100));
+        hlObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -40px 0px' });
+
+  // Observe every element that contains or is a .hl span
+  document.querySelectorAll('.hl').forEach(el => hlObserver.observe(el));
+
+  // Section title underline observer (separate for direct targets)
+  const titleObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('in-view');
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.section-title').forEach(el => titleObserver.observe(el));
+
+  /* ---- LIGHTBOX ---- */
+  function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.photo-item, .meal-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      if (img) openLightbox(img.src);
+    });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  /* ---- SNS TAB ---- */
+  function switchSNS(type, btn) {
+    document.querySelectorAll('.sns-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    // ここに実際のAPIによる投稿切り替え処理を追加
+    console.log('SNS switched to:', type);
+  }
+
+  /* ---- FORM SUBMIT ---- */
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '送信中...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = '✓ 送信しました！';
+      btn.style.background = 'linear-gradient(135deg,#4caf82,#6cbe9c)';
+      setTimeout(() => {
+        btn.textContent = '送信する →';
+        btn.style.background = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 3000);
+    }, 1200);
+  }
+
+  /* ---- NUMBER COUNTER ANIMATION ---- */
+  function animateNumber(el, target, suffix='') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current).toLocaleString() + suffix;
+    }, 16);
+  }
+
+  /* ================================================================
+     PROPERTY GALLERY
+     ================================================================
+     写真を追加するには propPhotos 配列に追記してください。
+     cat: 'exterior'=外観 / 'room'=個室 / 'living'=リビング /
+          'kitchen'=キッチン / 'bath'=浴室洗面 / 'floorplan'=間取り
+     featured: true にするとグリッドで2x2の大きいセルになります
+  ================================================================ */
+  const propPhotos = [
+    { src:'picture/27.jpg', cat:'exterior',  label:'外観（全景）',       featured:true },
+    { src:'picture/28.jpg', cat:'exterior',  label:'外観（正面）' },
+    { src:'picture/29.jpg', cat:'exterior',  label:'エントランス' },
+    { src:'picture/30.jpg', cat:'room',      label:'個室（Aタイプ）',    featured:true },
+    { src:'picture/31.jpg', cat:'room',      label:'個室（Bタイプ）' },
+    { src:'picture/32.jpg', cat:'room',      label:'個室（窓側）' },
+    { src:'picture/33.jpg', cat:'room',      label:'個室（収納）' },
+    { src:'picture/34.jpg', cat:'living',    label:'リビング',           featured:true },
+    { src:'picture/35.jpg', cat:'living',    label:'リビング（夜）' },
+    { src:'picture/36.jpg', cat:'kitchen',   label:'キッチン' },
+    { src:'picture/37.jpg', cat:'kitchen',   label:'ダイニング' },
+    { src:'picture/38.jpg', cat:'bath',      label:'浴室' },
+    { src:'picture/39.jpg', cat:'bath',      label:'洗面台' },
+    { src:'picture/40.jpg', cat:'floorplan', label:'間取り図（全体）' },
+    { src:'picture/41.jpg', cat:'floorplan', label:'個室間取り' },
+    { src:'picture/42.jpg', cat:'exterior',  label:'周辺環境' },
+  ];
+
+  /* カテゴリー表示名 */
+  const catLabel = {
+    exterior:'外観', room:'個室', living:'リビング',
+    kitchen:'キッチン', bath:'浴室・洗面', floorplan:'間取り'
+  };
+
+  let propCurrentIndex = 0;     /* メインビューアの現在インデックス（フィルター後配列内） */
+  let propFilteredPhotos = [...propPhotos];
+  let propCurrentCat = 'all';
+  let propLbIndex = 0;          /* ライトボックスの現在インデックス */
+
+  /* ---- 初期化 ---- */
+  function propInit() {
+    /* カウントバッジ更新 */
+    document.getElementById('countAll').textContent = propPhotos.length;
+    ['exterior','room','living','kitchen','bath','floorplan'].forEach(c => {
+      const el = document.getElementById('count' + c.charAt(0).toUpperCase() + c.slice(1));
+      if (el) el.textContent = propPhotos.filter(p => p.cat === c).length;
+    });
+
+    /* 間取り図グリッド */
+    const floorGrid = document.getElementById('propFloorGrid');
+    const floorPhotos = propPhotos.filter(p => p.cat === 'floorplan');
+    floorGrid.innerHTML = floorPhotos.map((p, i) => `
+      <div class="prop-floor-card" onclick="propOpenLightbox(${propPhotos.indexOf(p)}, 'all')">
+        <img class="prop-floor-img" src="${p.src}" alt="${p.label}" loading="lazy" />
+        <div class="prop-floor-info">
+          <span class="prop-floor-label">${p.label}</span>
+          <span class="prop-floor-size">🔍 拡大</span>
+        </div>
+      </div>`).join('');
+
+    propApplyFilter('all');
+  }
+
+  /* ---- カテゴリーフィルター ---- */
+  function propApplyFilter(cat) {
+    propCurrentCat = cat;
+    propFilteredPhotos = cat === 'all' ? [...propPhotos] : propPhotos.filter(p => p.cat === cat);
+    propCurrentIndex = 0;
+    propUpdateMainViewer();
+    propRenderThumbs();
+    propRenderGrid();
+
+    /* タブのactive切替 */
+    document.querySelectorAll('.prop-cat-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.cat === cat);
+    });
+  }
+
+  document.querySelectorAll('.prop-cat-tab').forEach(tab => {
+    tab.addEventListener('click', () => propApplyFilter(tab.dataset.cat));
+  });
+
+  /* ---- メインビューア更新 ---- */
+  function propUpdateMainViewer() {
+    if (!propFilteredPhotos.length) return;
+    const photo = propFilteredPhotos[propCurrentIndex];
+    const img = document.getElementById('propMainImg');
+
+    img.classList.add('switching');
+    setTimeout(() => {
+      img.src = photo.src;
+      img.alt = photo.label;
+      img.onload = () => img.classList.remove('switching');
+      img.onerror = () => img.classList.remove('switching');
+    }, 200);
+
+    document.getElementById('propCatBadge').textContent = catLabel[photo.cat] || photo.cat;
+    document.getElementById('propCounter').textContent =
+      `${propCurrentIndex + 1} / ${propFilteredPhotos.length}`;
+
+    /* サムネイルのアクティブ更新 */
+    document.querySelectorAll('.prop-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === propCurrentIndex);
+    });
+
+    /* アクティブサムネイルを自動スクロール */
+    const activeThumb = document.querySelector('.prop-thumb.active');
+    if (activeThumb) activeThumb.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  }
+
+  /* ---- サムネイル描画 ---- */
+  function propRenderThumbs() {
+    const container = document.getElementById('propThumbs');
+    container.innerHTML = propFilteredPhotos.map((p, i) => `
+      <div class="prop-thumb ${i === 0 ? 'active' : ''}" onclick="propGoTo(${i})">
+        <img src="${p.src}" alt="${p.label}" loading="lazy" />
+      </div>`).join('');
+
+    /* 多い場合は「+○枚」サムを追加 */
+    if (propFilteredPhotos.length > 12) {
+      const more = document.createElement('div');
+      more.className = 'prop-thumb-more';
+      more.innerHTML = `<span>+${propFilteredPhotos.length - 12}</span><span>全て見る</span>`;
+      more.onclick = () => propOpenLightbox(0);
+      container.appendChild(more);
+    }
+  }
+
+  /* ---- グリッド描画 ---- */
+  function propRenderGrid() {
+    const grid = document.getElementById('propPhotoGrid');
+    const count = document.getElementById('propGridCount');
+    const photos = propCurrentCat === 'all'
+      ? propPhotos.filter(p => p.cat !== 'floorplan')
+      : propFilteredPhotos;
+
+    count.textContent = `${photos.length}枚`;
+    grid.innerHTML = photos.map((p) => {
+      const globalIdx = propPhotos.indexOf(p);
+      const cls = p.featured ? 'prop-grid-item prop-grid-featured' : 'prop-grid-item';
+      return `
+        <div class="${cls}" onclick="propOpenLightbox(${globalIdx}, 'all')">
+          <img src="${p.src}" alt="${p.label}" loading="lazy" />
+          <div class="prop-grid-item-label">${p.label}</div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ---- ナビゲーション ---- */
+  function propGoTo(idx) {
+    propCurrentIndex = (idx + propFilteredPhotos.length) % propFilteredPhotos.length;
+    propUpdateMainViewer();
+  }
+  function propNav(dir) { propGoTo(propCurrentIndex + dir); }
+
+  /* ---- ライトボックス ---- */
+  function propOpenLightbox(globalIdx, forceAll) {
+    const pool = forceAll === 'all' ? propPhotos : propFilteredPhotos;
+    /* globalIdxをpoolのインデックスに変換 */
+    const photo = propPhotos[globalIdx];
+    propLbIndex = pool.indexOf(photo);
+    if (propLbIndex < 0) propLbIndex = 0;
+
+    window._propLbPool = pool;
+    propLbRender();
+
+    document.getElementById('propLightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function propLbRender() {
+    const pool = window._propLbPool || propFilteredPhotos;
+    const photo = pool[propLbIndex];
+    if (!photo) return;
+
+    const img = document.getElementById('propLbImg');
+    img.src = photo.src;
+    img.alt = photo.label;
+    document.getElementById('propLbTitle').textContent = photo.label;
+    document.getElementById('propLbCounter').textContent = `${propLbIndex + 1} / ${pool.length}`;
+
+    /* ライトボックスサムネイル */
+    const thumbsEl = document.getElementById('propLbThumbs');
+    thumbsEl.innerHTML = pool.map((p, i) => `
+      <div class="prop-lb-thumb ${i === propLbIndex ? 'active' : ''}" onclick="propLbGoTo(${i})">
+        <img src="${p.src}" alt="${p.label}" loading="lazy" />
+      </div>`).join('');
+    const activeThumb = thumbsEl.querySelector('.prop-lb-thumb.active');
+    if (activeThumb) setTimeout(() => activeThumb.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' }), 50);
+  }
+
+  function propLbGoTo(idx) {
+    const pool = window._propLbPool || propFilteredPhotos;
+    propLbIndex = (idx + pool.length) % pool.length;
+    propLbRender();
+  }
+  function propLbNav(dir) { propLbGoTo(propLbIndex + dir); }
+
+  function propCloseLightbox() {
+    document.getElementById('propLightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* キーボード操作 */
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('propLightbox').classList.contains('open')) {
+      if (e.key === 'ArrowLeft')  propLbNav(-1);
+      if (e.key === 'ArrowRight') propLbNav(1);
+      if (e.key === 'Escape')     propCloseLightbox();
+    }
+  });
+
+  /* スワイプ操作（タッチデバイス） */
+  let propTouchStartX = 0;
+  document.getElementById('propLightbox').addEventListener('touchstart', e => {
+    propTouchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.getElementById('propLightbox').addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - propTouchStartX;
+    if (Math.abs(dx) > 50) propLbNav(dx < 0 ? 1 : -1);
+  });
+
+  propInit();
+  /* ================================================================ */
+
+  /* ---- SMOOTH HOVER ON LOCATION ITEMS ---- */
+  document.querySelectorAll('.location-item').forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.06) + 's';
+  });
+
+  /* ---- YOUTUBE MODAL ---- */
+  function openYtModal(ytId, title) {
+    const overlay = document.getElementById('ytModal');
+    const content = document.getElementById('ytModalContent');
+    const titleEl = document.getElementById('ytModalTitle');
+
+    titleEl.textContent = title || '';
+
+    if (ytId && !ytId.startsWith('XXXXXXXXXX')) {
+      content.innerHTML = `
+        <div class="yt-modal-iframe-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen>
+          </iframe>
+        </div>`;
+    } else {
+      content.innerHTML = `
+        <div class="yt-modal-placeholder">
+          <span class="yt-icon">▶️</span>
+          <p>YouTubeの動画IDをここに設定してください</p>
+          <code>data-yt="YouTubeのVideoID"</code>
+          <p style="font-size:0.75rem;opacity:0.6;">例: https://www.youtube.com/watch?v=<strong>AbCdEfGhIjK</strong><br>→ data-yt="AbCdEfGhIjK"</p>
+        </div>`;
+    }
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeYtModal(e) {
+    if (e && e.target !== document.getElementById('ytModal')) return;
+    const overlay = document.getElementById('ytModal');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    // iframeを破棄して動画停止
+    setTimeout(() => {
+      document.getElementById('ytModalContent').innerHTML = '';
+    }, 300);
+  }
+
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('click', () => {
+      openYtModal(card.dataset.yt, card.dataset.title);
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeYtModal({ target: document.getElementById('ytModal') });
+  });
+</script>
+
+</body>
+</html>
